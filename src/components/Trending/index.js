@@ -1,10 +1,12 @@
 import {Component} from 'react'
 
 import {HiFire} from 'react-icons/hi'
-import Loader from 'react-loader-spinner'
+
 import Cookies from 'js-cookie'
 import Header from '../Header'
 import SideBar from '../SideBar'
+import VideoItem from '../VideoItem'
+import {FailureView, LoaderView} from '../FailureAndLoaderView'
 
 import {
   AppTrendingContainer,
@@ -16,10 +18,6 @@ import {
   Text,
   FireCard,
   TrendingVideosListContainer,
-  Container,
-  ImageContainer,
-  RetryButton,
-  Description,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -75,30 +73,16 @@ class Trending extends Component {
     }
   }
 
-  renderLoader = () => (
-    <Container>
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </Container>
-  )
-
   renderTrendingVideos = () => {
     const {trendingVideosList} = this.state
-    return <TrendingVideosListContainer>list</TrendingVideosListContainer>
+    return (
+      <TrendingVideosListContainer>
+        {trendingVideosList.map(eachVideo => (
+          <VideoItem isTrending eachVideo={eachVideo} key={eachVideo.id} />
+        ))}
+      </TrendingVideosListContainer>
+    )
   }
-
-  renderFailureView = () => (
-    <Container>
-      <ImageContainer
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
-      <Description>Oops! Something Went Wrong</Description>
-      <Description para as="p">
-        We are having some trouble to complete your request.Please try again.
-      </Description>
-      <RetryButton type="button">Retry</RetryButton>
-    </Container>
-  )
 
   renderAllViews = () => {
     const {apiStatus} = this.state
@@ -107,9 +91,9 @@ class Trending extends Component {
       case apiStatusConstants.success:
         return this.renderTrendingVideos()
       case apiStatusConstants.failure:
-        return this.renderFailureView()
+        return <FailureView />
       case apiStatusConstants.inProgress:
-        return this.renderLoader()
+        return <LoaderView />
       default:
         return null
     }

@@ -24,6 +24,13 @@ export const SideBarContainer = styled.div`
     flex-shrink: 0;
   }
 `
+
+export const SavedVideosContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 55px;
+  width: 100%;
+`
 export const SavedVideosBannerContainer = styled.div`
   background-color: #f4f4f4;
   height: 120px;
@@ -47,4 +54,30 @@ export const FireCard = styled.div`
   background-color: #cbd5e1;
   padding: 25px;
   border-radius: 45px;
+`
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const ImageContainer = styled.img`
+  height: 360px;
+  width: 350px;
+`
+export const Description = styled.h1`
+  color: ${props => (props.para ? '#909090' : '#383838')};
+  font-family: Roboto;
+  font-size: ${props => (props.para ? '20px' : '28px')};
+  line-height: 0.5;
+`
+export const SavedVideosListContainer = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-left: 20px;
+  background-color: #f1f5f9;
+  margin-top: 0;
 `

@@ -48,3 +48,19 @@ export const FireCard = styled.div`
   padding: 25px;
   border-radius: 45px;
 `
+export const GamingContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 55px;
+  width: 100%;
+`
+
+export const GamingVideosListContainer = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f8fafc;
+  width: 100%;
+  padding-left: 24px;
+  padding-top: 40px;
+  margin-top: 0;
+`

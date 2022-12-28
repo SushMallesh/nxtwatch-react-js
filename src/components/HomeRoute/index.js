@@ -1,9 +1,9 @@
 import {Component} from 'react'
 import {GrFormClose} from 'react-icons/gr'
 import {BiSearchAlt2} from 'react-icons/bi'
-import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import Header from '../Header'
+import {FailureView, LoaderView} from '../FailureAndLoaderView'
 
 import VideoItem from '../VideoItem'
 
@@ -104,26 +104,6 @@ class HomeRoute extends Component {
     this.setState({searchInput}, this.getHomeVideosList)
   }
 
-  renderLoader = () => (
-    <Container>
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </Container>
-  )
-
-  renderFailureView = () => (
-    <Container>
-      <ImageContainer
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
-      <Text>Oops! Something Went Wrong</Text>
-      <Text para as="p">
-        We are having some trouble to complete your request.Please try again.
-      </Text>
-      <RetryButton type="button">Retry</RetryButton>
-    </Container>
-  )
-
   renderNoVideosView = () => (
     <Container>
       <ImageContainer
@@ -148,7 +128,11 @@ class HomeRoute extends Component {
     return (
       <VideosListContainer>
         {videosList.map(eachVideo => (
-          <VideoItem key={eachVideo.id} eachVideo={eachVideo} />
+          <VideoItem
+            isTrending={false}
+            key={eachVideo.id}
+            eachVideo={eachVideo}
+          />
         ))}
       </VideosListContainer>
     )
@@ -161,9 +145,9 @@ class HomeRoute extends Component {
       case apiStatusConstants.success:
         return this.renderSuccessView()
       case apiStatusConstants.failure:
-        return this.renderFailureView()
+        return <FailureView />
       case apiStatusConstants.inProgress:
-        return this.renderLoader()
+        return <LoaderView />
       default:
         return null
     }
