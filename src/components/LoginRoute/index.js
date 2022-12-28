@@ -24,7 +24,7 @@ const logoLightThemeUrl =
   'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
 const logoDarkThemeUrl =
   'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
-
+console.log(logoDarkThemeUrl)
 class LoginRoute extends Component {
   state = {
     password: '',
@@ -136,7 +136,7 @@ class LoginRoute extends Component {
       <NxtWatchContext.Consumer>
         {value => {
           const {isDarkTheme} = value
-
+          console.log(isDarkTheme)
           return (
             <LoginRouteContainer>
               <ResponsiveContainer>
