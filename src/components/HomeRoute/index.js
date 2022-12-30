@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {Redirect} from 'react-router-dom'
 import {GrFormClose} from 'react-icons/gr'
 import {BiSearchAlt2} from 'react-icons/bi'
 import Cookies from 'js-cookie'
@@ -6,6 +7,8 @@ import Header from '../Header'
 import {FailureView, LoaderView} from '../FailureAndLoaderView'
 
 import VideoItem from '../VideoItem'
+
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   AppHomeContainer,
@@ -89,6 +92,14 @@ class HomeRoute extends Component {
     this.setState({hideBanner: true})
   }
 
+  onClickRetry = () => {
+    this.getHomeVideosList()
+  }
+
+  onCallApi = () => {
+    this.getHomeVideosList()
+  }
+
   onChangeSearchInput = event => {
     this.setState({searchInput: event.target.value})
   }
@@ -105,17 +116,27 @@ class HomeRoute extends Component {
   }
 
   renderNoVideosView = () => (
-    <Container>
-      <ImageContainer
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-        alt="no videos"
-      />
-      <Text>No Search results found</Text>
-      <Text para as="p">
-        Try different key words or remove search filter
-      </Text>
-      <RetryButton type="button">Retry</RetryButton>
-    </Container>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+
+        return (
+          <Container>
+            <ImageContainer
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+              alt="no videos"
+            />
+            <Text isDarkTheme={isDarkTheme}>No Search results found</Text>
+            <Text para as="p">
+              Try different key words or remove search filter
+            </Text>
+            <RetryButton onClick={this.onClickRetry} type="button">
+              Retry
+            </RetryButton>
+          </Container>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderSuccessView = () => {
@@ -145,7 +166,7 @@ class HomeRoute extends Component {
       case apiStatusConstants.success:
         return this.renderSuccessView()
       case apiStatusConstants.failure:
-        return <FailureView />
+        return <FailureView onCallApi={this.onCallApi} />
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:
@@ -157,28 +178,46 @@ class HomeRoute extends Component {
     const {searchInput} = this.state
 
     return (
-      <HomeVideosContainer>
-        <SearchContainer>
-          <CustomSearchInput
-            onChange={this.onChangeSearchInput}
-            onKeyDown={this.onEnterSearchInput}
-            value={searchInput}
-            placeholder="Search"
-            type="search"
-          />
-          <SearchButton onClick={this.searchVideos} type="button">
-            <BiSearchAlt2 size={20} />
-          </SearchButton>
-        </SearchContainer>
-        {this.renderAllViews()}
-      </HomeVideosContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+
+          return (
+            <HomeVideosContainer isDarkTheme={isDarkTheme}>
+              <SearchContainer>
+                <CustomSearchInput
+                  onChange={this.onChangeSearchInput}
+                  onKeyDown={this.onEnterSearchInput}
+                  value={searchInput}
+                  placeholder="Search"
+                  type="search"
+                />
+                <SearchButton
+                  data-testid="searchButton"
+                  isDarkTheme={isDarkTheme}
+                  onClick={this.searchVideos}
+                  type="button"
+                >
+                  <BiSearchAlt2 size={20} />
+                </SearchButton>
+              </SearchContainer>
+              {this.renderAllViews()}
+            </HomeVideosContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
   render() {
     const {hideBanner} = this.state
+    const accessToken = Cookies.get('access_token')
+    if (accessToken === undefined) {
+      return <Redirect to="/login" />
+    }
+
     return (
-      <AppHomeContainer>
+      <AppHomeContainer data-testid="home">
         <Header />
         <HomeContainer>
           <SideBarContainer>
@@ -186,14 +225,18 @@ class HomeRoute extends Component {
           </SideBarContainer>
           <HomeContentContainer>
             {!hideBanner && (
-              <BannerContainer>
+              <BannerContainer data-testid="banner">
                 <LogoAndCloseButtonContainer>
                   <Logo
                     src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
                     alt="nxt watch logo"
                   />
 
-                  <CloseButton onClick={this.onClickCloseBtn} type="button">
+                  <CloseButton
+                    data-testid="close"
+                    onClick={this.onClickCloseBtn}
+                    type="button"
+                  >
                     <GrFormClose size={32} />
                   </CloseButton>
                 </LogoAndCloseButtonContainer>

@@ -6,6 +6,8 @@ import SideBar from '../SideBar'
 import {LoaderView, FailureView} from '../FailureAndLoaderView'
 import GameVideoItem from '../GameVideoItem'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   AppGamingContainer,
   GamingContainer,
@@ -29,6 +31,10 @@ class Gaming extends Component {
   state = {apiStatus: apiStatusConstants.initial, gamingVideosList: []}
 
   componentDidMount() {
+    this.getGamingVideos()
+  }
+
+  onCallApi = () => {
     this.getGamingVideos()
   }
 
@@ -69,11 +75,18 @@ class Gaming extends Component {
     const {gamingVideosList} = this.state
 
     return (
-      <GamingVideosListContainer>
-        {gamingVideosList.map(eachVideo => (
-          <GameVideoItem eachVideo={eachVideo} key={eachVideo.id} />
-        ))}
-      </GamingVideosListContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <GamingVideosListContainer isDarkTheme={isDarkTheme}>
+              {gamingVideosList.map(eachVideo => (
+                <GameVideoItem eachVideo={eachVideo} key={eachVideo.id} />
+              ))}
+            </GamingVideosListContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
@@ -84,7 +97,7 @@ class Gaming extends Component {
       case apiStatusConstants.success:
         return this.renderGameVideos()
       case apiStatusConstants.failure:
-        return <FailureView />
+        return <FailureView onCallApi={this.onCallApi} />
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:
@@ -94,25 +107,32 @@ class Gaming extends Component {
 
   render() {
     return (
-      <AppGamingContainer>
-        <Header />
-        <GamingContainer>
-          <SideBarContainer>
-            <SideBar />
-          </SideBarContainer>
-          <GamingContentContainer>
-            <GamingBannerContainer>
-              <GamingBanner>
-                <FireCard>
-                  <FaGamepad color="#ff0000" size={28} />
-                </FireCard>
-                <Text>Gaming</Text>
-              </GamingBanner>
-            </GamingBannerContainer>
-            {this.renderAllViews()}
-          </GamingContentContainer>
-        </GamingContainer>
-      </AppGamingContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <AppGamingContainer data-testid="gaming">
+              <Header />
+              <GamingContainer>
+                <SideBarContainer>
+                  <SideBar />
+                </SideBarContainer>
+                <GamingContentContainer isDarkTheme={isDarkTheme}>
+                  <GamingBannerContainer isDarkTheme={isDarkTheme}>
+                    <GamingBanner>
+                      <FireCard isDarkTheme={isDarkTheme}>
+                        <FaGamepad color="#ff0000" size={28} />
+                      </FireCard>
+                      <Text isDarkTheme={isDarkTheme}>Gaming</Text>
+                    </GamingBanner>
+                  </GamingBannerContainer>
+                  {this.renderAllViews()}
+                </GamingContentContainer>
+              </GamingContainer>
+            </AppGamingContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

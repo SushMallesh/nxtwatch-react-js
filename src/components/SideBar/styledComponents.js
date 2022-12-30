@@ -4,6 +4,8 @@ export const SideBarContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  background-color: ${props => (props.isDarkTheme ? '#212121' : '#f9f9f9')};
+
   @media (min-width: 768px) {
     width: 100%;
     padding: 50px 0px 20px 20px;
@@ -12,6 +14,7 @@ export const SideBarContainer = styled.div`
 
 export const SideBarItems = styled.div`
   min-height: 70vh;
+
   @media (min-width: 768px) {
     min-height: 100vh;
   }
@@ -29,7 +32,7 @@ export const SideBarItemContainer = styled.div`
 `
 export const SideBarItem = styled.p`
   font-size: 12px;
-  color: #616e7c;
+  color: ${props => (props.isDarkTheme ? '#f4f4f4' : '#313131')};
   font-weight: 500;
   width: 100%;
   margin-left: 20px;
@@ -48,7 +51,7 @@ export const ContactUsContainer = styled.div`
   }
 `
 export const ContactUsText = styled.h1`
-  color: #424242;
+  color: ${props => (props.isDarkTheme ? '#f1f1f1' : '#424242')};
   font-size: 20px;
   font-family: 'Roboto';
   padding-left: 10px;
@@ -70,4 +73,5 @@ export const ContactUsDescription = styled(ContactUsText)`
   margin-top: 20px;
   width: 70%;
   line-height: 1.5;
+  color: ${props => (props.isDarkTheme ? '#f4f4f4' : '#313131')};
 `

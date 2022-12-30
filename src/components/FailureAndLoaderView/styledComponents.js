@@ -11,10 +11,17 @@ export const ImageContainer = styled.img`
   height: 360px;
   width: 350px;
 `
-export const Text = styled.h1`
-  color: ${props => (props.para ? '#909090' : '#383838')};
+
+export const Heading = styled.h1`
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#1e293b')};
   font-family: Roboto;
-  font-size: ${props => (props.para ? '20px' : '28px')};
+  font-size: 20px;
+  line-height: 0.5;
+`
+export const Text = styled.p`
+  color: #1e293b;
+  font-family: Roboto;
+  font-size: 20px;
   line-height: 0.5;
 `
 export const RetryButton = styled.button`

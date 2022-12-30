@@ -2,6 +2,7 @@ import {HiFire} from 'react-icons/hi'
 import Header from '../Header'
 import SideBar from '../SideBar'
 import VideoItem from '../VideoItem'
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   AppSavedVideosContainer,
@@ -18,7 +19,7 @@ import {
   SavedVideosListContainer,
 } from './styledComponents'
 
-const SavedVideos = props => {
+const SavedVideos = () => {
   const renderNoSavedVideosView = () => (
     <Container>
       <ImageContainer
@@ -32,46 +33,53 @@ const SavedVideos = props => {
     </Container>
   )
 
-  const renderSavedVideos = () => {
-    const {savedVideosList} = props
+  const renderSavedVideos = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme, savedVideosList} = value
 
-    return (
-      <SavedVideosListContainer>
-        {savedVideosList.map(eachVideo => (
-          <VideoItem eachVideo={eachVideo} isTrending key={eachVideo.id} />
-        ))}
-      </SavedVideosListContainer>
-    )
-  }
+        if (savedVideosList.length === 0) {
+          return renderNoSavedVideosView()
+        }
 
-  const renderSavedVideosViews = () => {
-    const {savedVideosList} = props
-    if (savedVideosList.length === 0) {
-      return renderNoSavedVideosView()
-    }
-    return renderSavedVideos()
-  }
+        return (
+          <SavedVideosListContainer isDarkTheme={isDarkTheme}>
+            {savedVideosList.map(eachVideo => (
+              <VideoItem eachVideo={eachVideo} isTrending key={eachVideo.id} />
+            ))}
+          </SavedVideosListContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
 
   return (
-    <AppSavedVideosContainer>
-      <Header />
-      <SavedVideosContainer>
-        <SideBarContainer>
-          <SideBar />
-        </SideBarContainer>
-        <SavedVideosContentContainer>
-          <SavedVideosBannerContainer>
-            <SavedVideosBanner>
-              <FireCard>
-                <HiFire color="#ff0000" size={28} />
-              </FireCard>
-              <Text>Saved Videos</Text>
-            </SavedVideosBanner>
-          </SavedVideosBannerContainer>
-          {renderSavedVideosViews()}
-        </SavedVideosContentContainer>
-      </SavedVideosContainer>
-    </AppSavedVideosContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+        return (
+          <AppSavedVideosContainer data-testid="savedVideos">
+            <Header />
+            <SavedVideosContainer>
+              <SideBarContainer>
+                <SideBar />
+              </SideBarContainer>
+              <SavedVideosContentContainer isDarkTheme={isDarkTheme}>
+                <SavedVideosBannerContainer isDarkTheme={isDarkTheme}>
+                  <SavedVideosBanner data-testid="banner">
+                    <FireCard isDarkTheme={isDarkTheme}>
+                      <HiFire color="#ff0000" size={28} />
+                    </FireCard>
+                    <Text>Saved Videos</Text>
+                  </SavedVideosBanner>
+                </SavedVideosBannerContainer>
+                {renderSavedVideos()}
+              </SavedVideosContentContainer>
+            </SavedVideosContainer>
+          </AppSavedVideosContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 }
 

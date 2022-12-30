@@ -20,7 +20,7 @@ export const VideoDetailsContainer = styled.div`
   padding-left: ${props => props.isTrending && '24px'};
 `
 export const VideoTitle = styled.p`
-  color: ${props => (props.isTrending ? '#1e293b' : '#424242')};
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#1e293b')};
   font-family: 'Roboto';
   font-size: ${props => (props.isTrending ? '20px' : '14px')};
   max-width: ${props => props.isTrending && '300px'};

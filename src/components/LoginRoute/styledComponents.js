@@ -4,15 +4,16 @@ export const LoginRouteContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9;
+  background-color: ${props => (props.isDarkTheme ? '#212121' : '#f9f9f9')};
   min-height: 100vh;
 `
 
 export const ResponsiveContainer = styled.div`
-  box-shadow: 0px 2px 10px 4px #f1f1f1;
+  box-shadow: ${props => !props.isDarkTheme && '0px 2px 10px 4px #f1f1f1'};
   border-radius: 10px;
   width: 80%;
   max-width: 550px;
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#ffffff')};
   @media (min-width: 768px) {
     width: 45%;
     max-width: 1110px;
@@ -46,9 +47,9 @@ export const UserDetailsContainer = styled.div`
   min-height: 220px;
 `
 export const InputLabel = styled.label`
-  color: #7e858e;
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#7e858e')};
   font-family: Roboto;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 `
 
@@ -58,6 +59,7 @@ export const CustomInput = styled.input`
   border-radius: 8px;
   border: 2px solid #cbd5e1;
   margin-top: 8px;
+  background-color: transparent;
 `
 
 export const CheckBoxContainer = styled.div`
@@ -71,7 +73,7 @@ export const CustomCheckBox = styled.input`
 `
 
 export const CheckBoxLabel = styled(InputLabel)`
-  color: #1e293b;
+  color: ${props => (props.isDarkTheme ? '#ffffff' : '#1e293b')};
   font-size: 15px;
 `
 export const LoginButton = styled.button`

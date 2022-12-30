@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const AppHomeContainer = styled.div`
   max-width: 550px;
   @media (min-width: 768px) {
+    width: 100%;
     max-width: 1150px;
   }
 `
@@ -11,6 +12,7 @@ export const HomeContainer = styled.div`
   display: flex;
   min-height: 100vh;
   padding-left: 20px;
+
   @media (min-width: 768px) {
     padding-left: 0;
   }
@@ -34,6 +36,7 @@ export const BannerContainer = styled.div`
   background-size: cover;
   max-height: 140px;
   max-width: 550px;
+  padding-left: 36px;
   @media (min-width: 768px) {
     max-width: 1110px;
     max-height: 200px;
@@ -84,7 +87,7 @@ export const GetNowButton = styled(CloseButton)`
 export const HomeVideosContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #f1f5f9;
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f1f5f9')};
   min-height: 100vh;
   margin-top: 20px;
   padding: 20px;
@@ -96,6 +99,7 @@ export const CustomSearchInput = styled.input`
   color: #94a3b8;
   font-weight: 500;
   outline: none;
+  background-color: transparent;
 `
 export const SearchContainer = styled.div`
   display: flex;
@@ -106,6 +110,7 @@ export const SearchButton = styled(CloseButton)`
   border: 1px solid #94a3b8;
   border-left: none;
   padding: 4px 20px 4px 20px;
+  background-color: ${props => (props.isDarkTheme ? '#94a3b8' : '#f1f5f9')};
 `
 export const VideosListContainer = styled.ul`
   display: flex;
@@ -125,7 +130,7 @@ export const ImageContainer = styled.img`
   width: 350px;
 `
 export const Text = styled.h1`
-  color: ${props => (props.para ? '#909090' : '#383838')};
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#475569')};
   font-family: Roboto;
   font-size: ${props => (props.para ? '20px' : '28px')};
   line-height: 0.5;

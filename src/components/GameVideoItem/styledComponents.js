@@ -11,7 +11,7 @@ export const GameImage = styled.img`
   height: 300px;
 `
 export const GameTitle = styled.h1`
-  color: #1e293b;
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#1e293b')};
   font-family: 'Roboto';
   font-size: 18px;
   font-weight: 500;

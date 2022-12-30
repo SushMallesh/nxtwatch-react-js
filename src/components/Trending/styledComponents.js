@@ -30,12 +30,12 @@ export const TrendingContentContainer = styled.div`
   flex-direction: column;
   padding-top: 55px;
   width: 100%;
+  background-color: ${props => (props.isDarkTheme ? '#212121' : 'transparent')};
 `
 export const TrendingBannerContainer = styled.div`
-  background-color: #f4f4f4;
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f4f4f4')};
   height: 120px;
   width: 100%;
-  padding-top: 15px;
 `
 export const TrendingBanner = styled.div`
   display: flex;
@@ -44,14 +44,14 @@ export const TrendingBanner = styled.div`
   width: 40%;
 `
 export const Text = styled.p`
-  color: #424242;
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#424242')};
   font-size: 30px;
   font-weight: 600;
   font-family: 'Roboto';
   margin-left: 20px;
 `
 export const FireCard = styled.div`
-  background-color: #cbd5e1;
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#cbd5e1')};
   padding: 25px;
   border-radius: 45px;
 `
@@ -61,6 +61,7 @@ export const TrendingVideosListContainer = styled.ul`
   flex-wrap: wrap;
   width: 100%;
   padding-left: 20px;
-  background-color: #f1f5f9;
+  background-color: ;
   margin-top: 0;
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#f1f5f9')};
 `

@@ -8,6 +8,8 @@ import SideBar from '../SideBar'
 import VideoItem from '../VideoItem'
 import {FailureView, LoaderView} from '../FailureAndLoaderView'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   AppTrendingContainer,
   TrendingContainer,
@@ -31,6 +33,10 @@ class Trending extends Component {
   state = {apiStatus: apiStatusConstants.initial}
 
   componentDidMount() {
+    this.getTrendingVideos()
+  }
+
+  onCallApi = () => {
     this.getTrendingVideos()
   }
 
@@ -75,12 +81,25 @@ class Trending extends Component {
 
   renderTrendingVideos = () => {
     const {trendingVideosList} = this.state
+
     return (
-      <TrendingVideosListContainer>
-        {trendingVideosList.map(eachVideo => (
-          <VideoItem isTrending eachVideo={eachVideo} key={eachVideo.id} />
-        ))}
-      </TrendingVideosListContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+
+          return (
+            <TrendingVideosListContainer isDarkTheme={isDarkTheme}>
+              {trendingVideosList.map(eachVideo => (
+                <VideoItem
+                  isTrending
+                  eachVideo={eachVideo}
+                  key={eachVideo.id}
+                />
+              ))}
+            </TrendingVideosListContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
@@ -91,7 +110,7 @@ class Trending extends Component {
       case apiStatusConstants.success:
         return this.renderTrendingVideos()
       case apiStatusConstants.failure:
-        return <FailureView />
+        return <FailureView onCallApi={this.onCallApi} />
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:
@@ -101,25 +120,32 @@ class Trending extends Component {
 
   render() {
     return (
-      <AppTrendingContainer>
-        <Header />
-        <TrendingContainer>
-          <SideBarContainer>
-            <SideBar />
-          </SideBarContainer>
-          <TrendingContentContainer>
-            <TrendingBannerContainer>
-              <TrendingBanner>
-                <FireCard>
-                  <HiFire color="#ff0000" size={28} />
-                </FireCard>
-                <Text>Trending</Text>
-              </TrendingBanner>
-            </TrendingBannerContainer>
-            {this.renderAllViews()}
-          </TrendingContentContainer>
-        </TrendingContainer>
-      </AppTrendingContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <AppTrendingContainer data-testid="trending">
+              <Header />
+              <TrendingContainer>
+                <SideBarContainer>
+                  <SideBar />
+                </SideBarContainer>
+                <TrendingContentContainer isDarkTheme={isDarkTheme}>
+                  <TrendingBannerContainer isDarkTheme={isDarkTheme}>
+                    <TrendingBanner data-testid="banner">
+                      <FireCard isDarkTheme={isDarkTheme}>
+                        <HiFire color="#ff0000" size={28} />
+                      </FireCard>
+                      <Text isDarkTheme={isDarkTheme}>Trending</Text>
+                    </TrendingBanner>
+                  </TrendingBannerContainer>
+                  {this.renderAllViews()}
+                </TrendingContentContainer>
+              </TrendingContainer>
+            </AppTrendingContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

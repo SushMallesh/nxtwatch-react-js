@@ -1,5 +1,5 @@
 import {Component} from 'react'
-
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import NxtWatchContext from '../../context/NxtWatchContext'
@@ -93,24 +93,6 @@ class LoginRoute extends Component {
     )
   }
 
-  renderPasswordInput = () => {
-    const {password, isPasswordShown} = this.state
-
-    return (
-      <UserCredentialsContainer>
-        <InputLabel htmlFor="password">PASSWORD</InputLabel>
-        <CustomInput
-          value={password}
-          onChange={this.onChangePassword}
-          id="password"
-          placeholder="Password"
-          type={isPasswordShown ? 'text' : 'password'}
-        />
-        {this.renderShowPassword()}
-      </UserCredentialsContainer>
-    )
-  }
-
   renderShowPassword = () => (
     <CheckBoxContainer>
       <CustomCheckBox
@@ -122,6 +104,33 @@ class LoginRoute extends Component {
     </CheckBoxContainer>
   )
 
+  renderPasswordInput = () => {
+    const {password, isPasswordShown} = this.state
+    return (
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+
+          return (
+            <UserCredentialsContainer>
+              <InputLabel isDarkTheme={isDarkTheme} htmlFor="password">
+                PASSWORD
+              </InputLabel>
+              <CustomInput
+                value={password}
+                onChange={this.onChangePassword}
+                id="password"
+                placeholder="Password"
+                type={isPasswordShown ? 'text' : 'password'}
+              />
+              {this.renderShowPassword()}
+            </UserCredentialsContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
+    )
+  }
+
   renderUserCredentialsInput = () => (
     <UserDetailsContainer>
       {this.renderUserNameInput()}
@@ -130,19 +139,62 @@ class LoginRoute extends Component {
   )
 
   render() {
-    const {errMsg, showErrMsg} = this.state
+    const {errMsg, showErrMsg, username, password, isPasswordShown} = this.state
+    const accessToken = Cookies.get('access_token')
+    if (accessToken !== undefined) {
+      return <Redirect to="/" />
+    }
 
     return (
       <NxtWatchContext.Consumer>
         {value => {
           const {isDarkTheme} = value
-          console.log(isDarkTheme)
+          const webSiteLogo = isDarkTheme ? logoDarkThemeUrl : logoLightThemeUrl
+
           return (
-            <LoginRouteContainer>
-              <ResponsiveContainer>
+            <LoginRouteContainer isDarkTheme={isDarkTheme}>
+              <ResponsiveContainer isDarkTheme={isDarkTheme}>
                 <LoginFormContainer onSubmit={this.onLogin}>
-                  <WebSiteLogo src={logoLightThemeUrl} alt="website logo" />
-                  {this.renderUserCredentialsInput()}
+                  <WebSiteLogo src={webSiteLogo} alt="website logo" />
+                  <UserDetailsContainer>
+                    <UserCredentialsContainer>
+                      <InputLabel isDarkTheme={isDarkTheme} htmlFor="username">
+                        USERNAME
+                      </InputLabel>
+                      <CustomInput
+                        value={username}
+                        onChange={this.onChangeUsername}
+                        id="username"
+                        placeholder="Username"
+                        type="text"
+                      />
+                    </UserCredentialsContainer>
+                    <UserCredentialsContainer>
+                      <InputLabel isDarkTheme={isDarkTheme} htmlFor="password">
+                        PASSWORD
+                      </InputLabel>
+                      <CustomInput
+                        value={password}
+                        onChange={this.onChangePassword}
+                        id="password"
+                        placeholder="Password"
+                        type={isPasswordShown ? 'text' : 'password'}
+                      />
+                      <CheckBoxContainer>
+                        <CustomCheckBox
+                          onChange={this.onShowPassword}
+                          type="checkbox"
+                          id="checkbox"
+                        />
+                        <CheckBoxLabel
+                          isDarkTheme={isDarkTheme}
+                          htmlFor="checkbox"
+                        >
+                          Show Password
+                        </CheckBoxLabel>
+                      </CheckBoxContainer>
+                    </UserCredentialsContainer>
+                  </UserDetailsContainer>
                   <LoginButton type="submit">Login</LoginButton>
                   {showErrMsg && <ErrorMessage>*{errMsg}</ErrorMessage>}
                 </LoginFormContainer>
