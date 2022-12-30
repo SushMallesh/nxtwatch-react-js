@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import {FaGamepad} from 'react-icons/fa'
 import Header from '../Header'
 import SideBar from '../SideBar'
-import {LoaderView, FailureView} from '../FailureAndLoaderView'
+import {LoaderView} from '../FailureAndLoaderView'
 import GameVideoItem from '../GameVideoItem'
 
 import NxtWatchContext from '../../context/NxtWatchContext'
@@ -18,6 +18,11 @@ import {
   FireCard,
   GamingContentContainer,
   GamingVideosListContainer,
+  Container,
+  ImageContainer,
+  FailureDescription,
+  RetryButton,
+  Heading,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -34,7 +39,7 @@ class Gaming extends Component {
     this.getGamingVideos()
   }
 
-  onCallApi = () => {
+  onClickRetry = () => {
     this.getGamingVideos()
   }
 
@@ -42,7 +47,7 @@ class Gaming extends Component {
     this.setState({apiStatus: apiStatusConstants.inProgress})
 
     const gamingVideosApiUrl = 'https://apis.ccbp.in/videos/gaming'
-    const jwtToken = Cookies.get('access_token')
+    const jwtToken = Cookies.get('jwt_token')
 
     const options = {
       method: 'GET',
@@ -71,6 +76,33 @@ class Gaming extends Component {
     }
   }
 
+  renderFailureView = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+
+        return (
+          <Container>
+            <ImageContainer
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+              alt="failure view"
+            />
+            <Heading isDarkTheme={isDarkTheme}>
+              Oops! Something Went Wrong
+            </Heading>
+            <FailureDescription>
+              We are having some trouble to complete your request. Please try
+              again.
+            </FailureDescription>
+            <RetryButton onClick={this.onClickRetry} type="button">
+              Retry
+            </RetryButton>
+          </Container>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
+
   renderGameVideos = () => {
     const {gamingVideosList} = this.state
 
@@ -97,7 +129,7 @@ class Gaming extends Component {
       case apiStatusConstants.success:
         return this.renderGameVideos()
       case apiStatusConstants.failure:
-        return <FailureView onCallApi={this.onCallApi} />
+        return this.renderFailureView()
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:
@@ -111,7 +143,7 @@ class Gaming extends Component {
         {value => {
           const {isDarkTheme} = value
           return (
-            <AppGamingContainer data-testid="gaming">
+            <AppGamingContainer isDarkTheme={isDarkTheme} data-testid="gaming">
               <Header />
               <GamingContainer>
                 <SideBarContainer>
@@ -123,7 +155,9 @@ class Gaming extends Component {
                       <FireCard isDarkTheme={isDarkTheme}>
                         <FaGamepad color="#ff0000" size={28} />
                       </FireCard>
-                      <Text isDarkTheme={isDarkTheme}>Gaming</Text>
+                      <Text as="h1" isDarkTheme={isDarkTheme}>
+                        Gaming
+                      </Text>
                     </GamingBanner>
                   </GamingBannerContainer>
                   {this.renderAllViews()}

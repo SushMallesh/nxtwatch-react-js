@@ -30,7 +30,7 @@ export const FailureView = props => {
               Oops! Something Went Wrong
             </Heading>
             <Text>
-              We are having some trouble to complete your request.Please try
+              We are having some trouble to complete your request. Please try
               again.
             </Text>
             <RetryButton onClick={onClickRetry} type="button">

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const AppHomeContainer = styled.div`
   max-width: 550px;
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f9f9f9')};
   @media (min-width: 768px) {
     width: 100%;
     max-width: 1150px;
@@ -30,6 +31,7 @@ export const HomeContentContainer = styled.div`
   flex-direction: column;
   padding-top: 55px;
   width: 100%;
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f4f4f4')};
 `
 export const BannerContainer = styled.div`
   background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
@@ -88,7 +90,6 @@ export const HomeVideosContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${props => (props.isDarkTheme ? '#181818' : '#f1f5f9')};
-  min-height: 100vh;
   margin-top: 20px;
   padding: 20px;
 `
@@ -115,6 +116,7 @@ export const SearchButton = styled(CloseButton)`
 export const VideosListContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  overflow-y: scroll;
   width: 100%;
   padding-left: 0;
 `
@@ -133,6 +135,12 @@ export const Text = styled.h1`
   color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#475569')};
   font-family: Roboto;
   font-size: ${props => (props.para ? '20px' : '28px')};
+  line-height: 0.5;
+`
+export const FailureDescription = styled.p`
+  color: #1e293b;
+  font-family: Roboto;
+  font-size: 20px;
   line-height: 0.5;
 `
 export const RetryButton = styled(CloseButton)`

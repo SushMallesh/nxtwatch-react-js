@@ -26,7 +26,7 @@ const SavedVideos = () => {
         src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
         alt="no saved videos"
       />
-      <Text>No saved videos found</Text>
+      <Text as="h1">No saved videos found</Text>
       <Description para as="p">
         You can save your videos while watching them
       </Description>
@@ -58,7 +58,10 @@ const SavedVideos = () => {
       {value => {
         const {isDarkTheme} = value
         return (
-          <AppSavedVideosContainer data-testid="savedVideos">
+          <AppSavedVideosContainer
+            isDarkTheme={isDarkTheme}
+            data-testid="savedVideos"
+          >
             <Header />
             <SavedVideosContainer>
               <SideBarContainer>
@@ -70,7 +73,7 @@ const SavedVideos = () => {
                     <FireCard isDarkTheme={isDarkTheme}>
                       <HiFire color="#ff0000" size={28} />
                     </FireCard>
-                    <Text>Saved Videos</Text>
+                    <Text as="h1">Saved Videos</Text>
                   </SavedVideosBanner>
                 </SavedVideosBannerContainer>
                 {renderSavedVideos()}

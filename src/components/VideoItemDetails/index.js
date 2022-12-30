@@ -25,12 +25,17 @@ import {
   SubscriberDetails,
   SubscribersCount,
   Description,
+  Container,
+  ImageContainer,
+  FailureDescription,
+  RetryButton,
+  Heading,
 } from './styledComponents'
 
 import Header from '../Header'
 import SideBar from '../SideBar'
 
-import {LoaderView, FailureView} from '../FailureAndLoaderView'
+import {LoaderView} from '../FailureAndLoaderView'
 
 import NxtWatchContext from '../../context/NxtWatchContext'
 
@@ -47,7 +52,6 @@ class VideoItemDetails extends Component {
     apiStatus: apiStatusConstants.initial,
     isLiked: false,
     isDisliked: false,
-    isSaved: false,
   }
 
   componentDidMount() {
@@ -62,15 +66,13 @@ class VideoItemDetails extends Component {
     this.setState({isDisliked: true, isLiked: false})
   }
 
-  onClickSave = () => {
-    this.setState(prevState => ({
-      isSaved: !prevState.isSaved,
-    }))
+  onClickRetry = () => {
+    this.getVideoDetails()
   }
 
   getVideoDetails = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
-    const jwtToken = Cookies.get('access_token')
+    const jwtToken = Cookies.get('jwt_token')
 
     const {match} = this.props
     const {params} = match
@@ -112,7 +114,7 @@ class VideoItemDetails extends Component {
   }
 
   renderVideoDetails = () => {
-    const {videoDetailsObject, isLiked, isDisliked, isSaved} = this.state
+    const {videoDetailsObject, isLiked, isDisliked} = this.state
 
     const {
       description,
@@ -121,6 +123,7 @@ class VideoItemDetails extends Component {
       title,
       videoUrl,
       viewCount,
+      id,
     } = videoDetailsObject
 
     const {profileImageUrl, name, subscriberCount} = channel
@@ -130,7 +133,10 @@ class VideoItemDetails extends Component {
     return (
       <NxtWatchContext.Consumer>
         {value => {
-          const {isDarkTheme} = value
+          const {isDarkTheme, updateSavedVideosList, savedVideosList} = value
+
+          const isSaved = savedVideosList.find(eachVideo => eachVideo.id === id)
+
           return (
             <VideoItemDetailsContainer
               data-testid="videoItemDetails"
@@ -150,33 +156,33 @@ class VideoItemDetails extends Component {
                     onClick={this.onClickLike}
                     type="button"
                   >
-                    <BiLike size={20} />
-                    <LikeDisLikeText>Like</LikeDisLikeText>
+                    <BiLike size={20} /> Like
+                    {/* <LikeDisLikeText>Like</LikeDisLikeText> */}
                   </LikeButton>
                   <DisLikeButton
                     onClick={this.onClickDislike}
                     isDisliked={isDisliked}
                     type="button"
                   >
-                    <BiDislike size={20} />
-                    <LikeDisLikeText>Dislike</LikeDisLikeText>
+                    <BiDislike size={20} /> Dislike
+                    {/* <LikeDisLikeText>Dislike</LikeDisLikeText> */}
                   </DisLikeButton>
                   <SaveButton
-                    onClick={this.onClickSave}
+                    onClick={() => updateSavedVideosList(videoDetailsObject)}
                     isSaved={isSaved}
                     type="button"
                   >
-                    <BiListPlus size={20} />{' '}
+                    <BiListPlus size={20} />
                     <SaveText>{isSaved ? 'Saved' : 'Save'}</SaveText>
                   </SaveButton>
                 </LikesAndDisLikesContainer>
               </ViewsAndLikesContainer>
               <SeparatorLine />
               <TitleAndSubscribersContainer>
-                <ProfileImage src={profileImageUrl} alt="profile" />
+                <ProfileImage src={profileImageUrl} alt="channel logo" />
                 <SubscriberDetails>
                   <Title isDarkTheme={isDarkTheme}>{name}</Title>
-                  <SubscribersCount>
+                  <SubscribersCount as="p">
                     {subscriberCount} subscribers
                   </SubscribersCount>
                   <Description isDarkTheme={isDarkTheme}>
@@ -191,13 +197,40 @@ class VideoItemDetails extends Component {
     )
   }
 
+  renderFailureView = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+
+        return (
+          <Container>
+            <ImageContainer
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+              alt="failure view"
+            />
+            <Heading isDarkTheme={isDarkTheme}>
+              Oops! Something Went Wrong
+            </Heading>
+            <FailureDescription>
+              We are having some trouble to complete your request. Please try
+              again.
+            </FailureDescription>
+            <RetryButton onClick={this.onClickRetry} type="button">
+              Retry
+            </RetryButton>
+          </Container>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
+
   renderVideoItemsAllViews = () => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderVideoDetails()
       case apiStatusConstants.failure:
-        return <FailureView />
+        return this.renderFailureView()
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:

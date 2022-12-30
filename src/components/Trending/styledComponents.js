@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const AppTrendingContainer = styled.div`
   max-width: 550px;
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#f9f9f9')};
   @media (min-width: 768px) {
     max-width: 1100px;
   }
@@ -64,4 +65,39 @@ export const TrendingVideosListContainer = styled.ul`
   background-color: ;
   margin-top: 0;
   background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#f1f5f9')};
+`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const ImageContainer = styled.img`
+  height: 360px;
+  width: 350px;
+`
+
+export const Heading = styled.h1`
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#1e293b')};
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 0.5;
+`
+export const FailureDescription = styled.p`
+  color: #1e293b;
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 0.5;
+`
+export const RetryButton = styled.button`
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: #4f46e5;
+  font-weight: 600;
+  font-size: 15px;
+  color: #f1f1f1;
+  border-radius: 8px;
+  padding: 12px 30px 12px 30px;
 `

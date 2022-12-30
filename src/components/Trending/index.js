@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import Header from '../Header'
 import SideBar from '../SideBar'
 import VideoItem from '../VideoItem'
-import {FailureView, LoaderView} from '../FailureAndLoaderView'
+import {LoaderView} from '../FailureAndLoaderView'
 
 import NxtWatchContext from '../../context/NxtWatchContext'
 
@@ -20,6 +20,11 @@ import {
   Text,
   FireCard,
   TrendingVideosListContainer,
+  Container,
+  Heading,
+  FailureDescription,
+  RetryButton,
+  ImageContainer,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -36,7 +41,7 @@ class Trending extends Component {
     this.getTrendingVideos()
   }
 
-  onCallApi = () => {
+  onClickRetry = () => {
     this.getTrendingVideos()
   }
 
@@ -46,7 +51,7 @@ class Trending extends Component {
       trendingVideosList: [],
     })
 
-    const jwtToken = Cookies.get('access_token')
+    const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
       headers: {
@@ -79,6 +84,33 @@ class Trending extends Component {
     }
   }
 
+  renderFailureView = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+
+        return (
+          <Container>
+            <ImageContainer
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+              alt="failure view"
+            />
+            <Heading isDarkTheme={isDarkTheme}>
+              Oops! Something Went Wrong
+            </Heading>
+            <FailureDescription>
+              We are having some trouble to complete your request. Please try
+              again.
+            </FailureDescription>
+            <RetryButton onClick={this.onClickRetry} type="button">
+              Retry
+            </RetryButton>
+          </Container>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
+
   renderTrendingVideos = () => {
     const {trendingVideosList} = this.state
 
@@ -110,7 +142,7 @@ class Trending extends Component {
       case apiStatusConstants.success:
         return this.renderTrendingVideos()
       case apiStatusConstants.failure:
-        return <FailureView onCallApi={this.onCallApi} />
+        return this.renderFailureView()
       case apiStatusConstants.inProgress:
         return <LoaderView />
       default:
@@ -124,7 +156,10 @@ class Trending extends Component {
         {value => {
           const {isDarkTheme} = value
           return (
-            <AppTrendingContainer data-testid="trending">
+            <AppTrendingContainer
+              isDarkTheme={isDarkTheme}
+              data-testid="trending"
+            >
               <Header />
               <TrendingContainer>
                 <SideBarContainer>
@@ -136,7 +171,9 @@ class Trending extends Component {
                       <FireCard isDarkTheme={isDarkTheme}>
                         <HiFire color="#ff0000" size={28} />
                       </FireCard>
-                      <Text isDarkTheme={isDarkTheme}>Trending</Text>
+                      <Text as="h1" isDarkTheme={isDarkTheme}>
+                        Trending
+                      </Text>
                     </TrendingBanner>
                   </TrendingBannerContainer>
                   {this.renderAllViews()}

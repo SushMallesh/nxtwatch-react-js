@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const AppSavedVideosContainer = styled.div`
   max-width: 550px;
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#f9f9f9')};
   @media (min-width: 768px) {
     max-width: 1150px;
   }

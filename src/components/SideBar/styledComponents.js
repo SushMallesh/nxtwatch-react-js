@@ -25,7 +25,12 @@ export const SideBarItemContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   line-height: 0.3;
+  background-color: ${props => {
+    const {isDarkTheme} = props
 
+    const bgColor = isDarkTheme ? '#424242' : '#e2e8f0'
+    return props.isActive ? bgColor : ''
+  }};
   @media (min-width: 768px) {
     justify-content: space-around;
   }
@@ -50,7 +55,7 @@ export const ContactUsContainer = styled.div`
     flex-direction: column;
   }
 `
-export const ContactUsText = styled.h1`
+export const ContactUsText = styled.p`
   color: ${props => (props.isDarkTheme ? '#f1f1f1' : '#424242')};
   font-size: 20px;
   font-family: 'Roboto';

@@ -27,7 +27,7 @@ const NotFound = () => (
           <NotFoundImage src={NotFoundImageUrl} alt="not found" />
           <NotFoundHeading>Page Not Found</NotFoundHeading>
           <NotFoundDescription>
-            We are sorry,the page you requested could not be found
+            we are sorry, the page you requested could not be found.
           </NotFoundDescription>
         </NotFoundContainer>
       )

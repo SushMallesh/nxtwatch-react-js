@@ -40,7 +40,7 @@ const lightThemeLogo =
 
 const Header = props => {
   const onClickLogout = () => {
-    Cookies.remove('access_token')
+    Cookies.remove('jwt_token')
 
     const {history} = props
     history.replace('/login')
@@ -80,6 +80,7 @@ const Header = props => {
                 </NavItem>
 
                 <Popup
+                  modal
                   trigger={
                     <LogoutButton
                       onClick={onClickLogout}
@@ -89,12 +90,13 @@ const Header = props => {
                       Logout
                     </LogoutButton>
                   }
+                  className="logout-popup"
                 >
                   {close => (
                     <PopUpContainer>
                       <PopUpCard>
                         <PopUpMessage>
-                          Are you sure you want to logout?
+                          Are you sure, you want to logout
                         </PopUpMessage>
                         <ButtonsContainer>
                           <CancelButton
@@ -141,11 +143,13 @@ const Header = props => {
                 </Popup>
 
                 <Popup
+                  modal
                   trigger={
                     <LogoutButton onClick={onClickLogout} type="button">
                       <FiLogOut size={28} />
                     </LogoutButton>
                   }
+                  className="logout-popup"
                 >
                   {close => (
                     <PopUpContainer>

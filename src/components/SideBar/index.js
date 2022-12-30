@@ -19,35 +19,58 @@ import {
   ContactUsDescription,
 } from './styledComponents'
 
+const activeMenuConstants = {
+  home: 'HOME',
+  trending: 'TRENDING',
+  gaming: 'GAMING',
+  savedVideos: 'SAVED_VIDEOS',
+}
+
 const SideBar = () => (
   <NxtWatchContext.Consumer>
     {value => {
-      const {isDarkTheme} = value
+      const {isDarkTheme, activeMenu, changeMenu} = value
 
       return (
         <SideBarContainer isDarkTheme={isDarkTheme}>
           <SideBarItems>
             <Link style={{textDecoration: 'none'}} to="/">
-              <SideBarItemContainer>
+              <SideBarItemContainer
+                isDarkTheme={isDarkTheme}
+                isActive={activeMenu === activeMenuConstants.home}
+                onClick={() => changeMenu(activeMenuConstants.home)}
+              >
                 <AiFillHome color="#616e7c" size={24} />
                 <SideBarItem isDarkTheme={isDarkTheme}>Home</SideBarItem>
               </SideBarItemContainer>
             </Link>
 
-            <Link to="/trending" style={{textDecoration: 'none'}}>
-              <SideBarItemContainer>
+            <Link style={{textDecoration: 'none'}} to="/trending">
+              <SideBarItemContainer
+                isDarkTheme={isDarkTheme}
+                isActive={activeMenu === activeMenuConstants.trending}
+                onClick={() => changeMenu(activeMenuConstants.trending)}
+              >
                 <FaFire color="#616e7c" size={24} />
                 <SideBarItem isDarkTheme={isDarkTheme}>Trending</SideBarItem>
               </SideBarItemContainer>
             </Link>
-            <Link to="/gaming" style={{textDecoration: 'none'}}>
-              <SideBarItemContainer>
+            <Link style={{textDecoration: 'none'}} to="/gaming">
+              <SideBarItemContainer
+                isDarkTheme={isDarkTheme}
+                isActive={activeMenu === activeMenuConstants.gaming}
+                onClick={() => changeMenu(activeMenuConstants.gaming)}
+              >
                 <FaGamepad color="#616e7c" size={24} />
                 <SideBarItem isDarkTheme={isDarkTheme}>Gaming</SideBarItem>
               </SideBarItemContainer>
             </Link>
-            <Link to="/saved-videos" style={{textDecoration: 'none'}}>
-              <SideBarItemContainer>
+            <Link style={{textDecoration: 'none'}} to="/saved-videos">
+              <SideBarItemContainer
+                isDarkTheme={isDarkTheme}
+                isActive={activeMenu === activeMenuConstants.savedVideos}
+                onClick={() => changeMenu(activeMenuConstants.savedVideos)}
+              >
                 <BiListPlus color="#616e7c" size={24} />
                 <SideBarItem isDarkTheme={isDarkTheme}>
                   Saved videos
@@ -72,7 +95,7 @@ const SideBar = () => (
               />
             </IconsContainer>
             <ContactUsDescription isDarkTheme={isDarkTheme} as="p">
-              Enjoy!Now to see your channels and recommendations!
+              Enjoy! Now to see your channels and recommendations!
             </ContactUsDescription>
           </ContactUsContainer>
         </SideBarContainer>

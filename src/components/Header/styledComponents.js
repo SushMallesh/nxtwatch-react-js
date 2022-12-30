@@ -102,7 +102,7 @@ export const PopUpCard = styled.div`
   width: 30%;
   box-shadow: 0px 0px 2px 1px #f1f5f9;
 `
-export const PopUpMessage = styled.h1`
+export const PopUpMessage = styled.p`
   color: #212121;
   font-size: 15px;
   font-weight: 500;

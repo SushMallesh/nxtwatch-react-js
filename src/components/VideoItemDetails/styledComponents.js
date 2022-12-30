@@ -33,7 +33,7 @@ export const VideoItemDetailsContainer = styled.div`
   width: 100%;
 `
 
-export const Title = styled.h1`
+export const Title = styled.p`
   color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#383838')};
   font-size: 18px;
   font-family: 'Roboto';
@@ -51,7 +51,7 @@ export const ViewsAndPublishedDateContainer = styled.div`
   align-items: center;
 `
 
-export const ViewAndDate = styled.span`
+export const ViewAndDate = styled.p`
   color: #616e7c;
   font-size: 16px;
   font-family: 'Roboto';
@@ -71,14 +71,14 @@ export const Button = styled.button`
 `
 
 export const DisLikeButton = styled(Button)`
-  color: ${props => (props.isDisliked ? '#4f46e5' : '#616e7c')};
+  color: ${props => (props.isDisliked ? '#2563eb' : '#64748b')};
 `
 
 export const LikeButton = styled(Button)`
-  color: ${props => (props.isLiked ? '#4f46e5' : '#616e7c')};
+  color: ${props => (props.isLiked ? '#2563eb' : '#64748b')};
 `
 export const SaveButton = styled(Button)`
-  color: ${props => (props.isSaved ? '#4f46e5' : '#616e7c')};
+  color: ${props => (props.isSaved ? '#2563eb' : '#64748b')};
 `
 
 export const LikeDisLikeText = styled.p`
@@ -121,4 +121,39 @@ export const Description = styled.p`
   font-size: 15px;
   font-family: 'Roboto';
   font-weight: 400;
+`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const ImageContainer = styled.img`
+  height: 360px;
+  width: 350px;
+`
+
+export const Heading = styled.h1`
+  color: ${props => (props.isDarkTheme ? '#f1f5f9' : '#1e293b')};
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 0.5;
+`
+export const FailureDescription = styled.p`
+  color: #1e293b;
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 0.5;
+`
+export const RetryButton = styled.button`
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: #4f46e5;
+  font-weight: 600;
+  font-size: 15px;
+  color: #f1f1f1;
+  border-radius: 8px;
+  padding: 12px 30px 12px 30px;
 `
